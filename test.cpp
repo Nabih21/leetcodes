@@ -1,6 +1,8 @@
 #include <vector>
+#include <string>
 #include <iostream>
 #include <unordered_map>
+
 
 
 
@@ -50,6 +52,7 @@ int findMin(std::vector<int>& nums) {
 std::vector<int> twoSum(std::vector<int>& nums, int target) {
     std::vector<int> resultVector;
     std::unordered_map<int, int> myMap;
+
     for (int i = 0; i < nums.size() - 1; i++)
     {
 
@@ -63,6 +66,38 @@ std::vector<int> twoSum(std::vector<int>& nums, int target) {
     return resultVector;
 }
 
+std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
+
+    std::vector < std:: vector<std::string >> results;
+    std::unordered_map<std::string, std::vector<std::string> > myMap;
+
+    for (int i = 0; i < strs.size(); i++)
+    {
+        std::vector<int> keys(26, 0);
+        std::string str = strs[i];
+        for (int j = 0; j < str.size(); j++)
+        {
+            ++keys[str[j] - 'a'];
+        }
+
+        std::string keyString;
+        for (int a = 0; a < keys.size(); a++)
+        {
+            keyString += std::to_string(keys[a]);
+        }
+
+        myMap[keyString].push_back(str);
+
+    }
+
+    for (const auto& anagrams : myMap)
+    {
+        results.push_back(anagrams.second);
+    }
+
+    return results;
+}
+
 
 int main() {
 
@@ -71,6 +106,10 @@ int main() {
    //int res =  findMin(nums);
 
     twoSum(nums, target);
+
+    std::vector<std::string> testVec = { "bdddddddddd" , "bbbbbbbbbbc" };
+
+    groupAnagrams(testVec);
 
  
 
