@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <unordered_map>
+#include <stack>
+#include <unordered_set>
 
 
 
@@ -83,7 +85,7 @@ std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& st
         std::string keyString;
         for (int a = 0; a < keys.size(); a++)
         {
-            keyString += std::to_string(keys[a]);
+            keyString += ',' + std::to_string(keys[a]);
         }
 
         myMap[keyString].push_back(str);
@@ -99,19 +101,104 @@ std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& st
 }
 
 
+ std::vector<int> topKFrequent(std::vector<int>& nums, int k) {
+        
+        std::unordered_map<int, int> frequencyMap ; 
+        std::stack<int> countingStack;
+        std::vector<int> result;
+        for (int i = 0; i <= nums.size() -1 ; i++ ) 
+        {
+            ++frequencyMap[nums[i]] ;
+            if ( !countingStack.empty()) 
+            {
+                if ( frequencyMap[countingStack.top()] > frequencyMap[nums[i]] )  
+                {
+
+                  int temp = countingStack.top() ;
+                  countingStack.pop() ;
+                  countingStack.push(nums[i]); 
+                  countingStack.push(temp); 
+                }
+                else 
+                {
+                    countingStack.push(nums[i]);
+                }
+            }
+            else 
+            {
+                countingStack.push(nums[i]);
+            }
+        }
+
+        std::unordered_set<int> mySet ; 
+        while ( k != 0 ) 
+        {
+            if ( !mySet.count(countingStack.top()) )
+            {
+            result.push_back( countingStack.top() );
+            mySet.insert(countingStack.top());
+            countingStack.pop() ; 
+            --k;
+            }
+            else {
+                countingStack.pop();
+            }
+        }
+        return result;
+    }
+
+
+ std::string encode(std::vector<std::string>& strs) {
+     std::string result;
+     for (int i = 0; i < strs.size(); i++)
+     {
+
+         result += strs[i] + '|';
+     }
+
+     return result;
+
+ }
+
+ std::vector<std::string> decode(std::string s) {
+     std::vector<std::string> result;
+
+     std::string temp;
+     for (int i = 0; i < s.length(); i++)
+     {
+         if (s[i] != '|')
+         {
+             if (s[i] != '\0')
+             {
+                 temp += s[i];
+             }
+         }
+         else {
+             result.push_back(temp);
+             temp.clear();
+         }
+
+     }
+
+     return result;
+
+ }
+
+
 int main() {
 
-    std::vector<int> nums = {4,5,6 };
-    int target = 10;
+    std::vector<int> nums = { 1,2,2,3,3,3 };
+    //int target = 10;
    //int res =  findMin(nums);
 
-    twoSum(nums, target);
+ /*   twoSum(nums, target);
 
     std::vector<std::string> testVec = { "bdddddddddd" , "bbbbbbbbbbc" };
 
-    groupAnagrams(testVec);
+    groupAnagrams(testVec);*/
 
- 
+    topKFrequent(nums, 2);
+    
 
     return 0;
 }
