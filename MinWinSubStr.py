@@ -4,7 +4,7 @@ class Solution:
         charSet = set()
         charMap = {}
         # shortestStr = ""
-        minLeft, minRight = 0, 1
+        minLeft, minRight = 0, 0
         count = 1001
 
         for char in t :
@@ -14,13 +14,16 @@ class Solution:
         # for key, value in enumerate(s) : 
         #     charMap[key] = charMap.get(key, 0 ) + 1
         
-        left, right = 0, 1
+        left, right = 0, 0
         if s[left] in charSet :
             charMap[s[left]] = 1
+            if len(s) == 1 and len(t) == 1 : 
+                return s[0]
 
-        while right < len(s) :
+
+        while right < len(s)  :
             
-            if s[right] in charSet: 
+            if s[right] in charSet and not right == left: 
                 charMap[s[right]] += 1
 
             while  all( v >= 1 for v in charMap.values()) :
@@ -44,6 +47,8 @@ class Solution:
 
 if __name__ == "__main__":
     solution = Solution()
-    s = "ADOBECODEBANC"
-    t = "ABC"
+    # s = "ADOBECODEBANC"
+    # t = "ABC"
+    s = "a"
+    t = "aa"
     print(solution.minWindow(s, t))  # Output the result
