@@ -1,54 +1,53 @@
+
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
         
-        charSet = set()
+        setMap = {}
+        left, right = 0,1
+        minLeft, minRight = 0, 0 
         charMap = {}
-        # shortestStr = ""
-        minLeft, minRight = 0, 0
         count = 1001
 
-        for char in t :
-            charSet.add(char)
+        for char in t : 
+            setMap[char] = setMap.get(char, 0 ) + 1
             charMap[char] = 0
 
-        # for key, value in enumerate(s) : 
-        #     charMap[key] = charMap.get(key, 0 ) + 1
         
-        left, right = 0, 0
-        if s[left] in charSet :
+        if setMap.get(s[left], 0 ) >= 1 :
             charMap[s[left]] = 1
-            if len(s) == 1 and len(t) == 1 : 
+            if len(t) == 1 : 
                 return s[0]
-
-
-        while right < len(s)  :
+        
+        while right < len(s) : 
+            if setMap.get(s[right], 0) > 0 and not right == left : 
+                charMap[s[right]] = charMap.get(s[right], 0) +  1
             
-            if s[right] in charSet and not right == left: 
-                charMap[s[right]] += 1
-
-            while  all( v >= 1 for v in charMap.values()) :
-                if ( right - left + 1 < count ): 
+            while  all(charMap[k] >= setMap[k] for k in setMap) :
+                if right - left + 1 < count : 
                     minLeft = left
-                    minRight = right
+                    minRight = right 
                     count = right - left + 1
-                if s[left] in charSet : 
+                if  setMap.get(s[left], 0) > 0  :
                     charMap[s[left]] -= 1
                 left += 1
-                       
+                
             right += 1
-            
-        if count == 1001 :
+        
+        if count == 1001 : 
             return ""
         else : 
-           return  s[minLeft:minRight+1]
+            return s[minLeft:minRight+1]
 
-
-
+       
 
 if __name__ == "__main__":
     solution = Solution()
-    # s = "ADOBECODEBANC"
+    # s = "ADOBECODEBANCEEEE"
     # t = "ABC"
-    s = "a"
-    t = "aa"
+    # s = "aab"
+    # t = "aa"
+    # s = "OUZODYXAZV" 
+    # t = "XYZ"
+    s="aaaaaaaaaaaabbbbbcdd"
+    t="abcdd"
     print(solution.minWindow(s, t))  # Output the result
