@@ -10,13 +10,19 @@ class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         
         curr1, curr2 = list1, list2
-    
+                
+        if curr1 == None or curr2 == None:
+            if curr1 == None:
+                return curr2
+            else:
+                return curr1 
         if curr1.val <= curr2.val :
             head = curr1 
             curr1 = curr1.next
         else:
             head = curr2
             curr2 = curr2.next
+
 
 
         res = head
@@ -49,7 +55,7 @@ if __name__ == "__main__":
             current = current.next
         return head
 
-    list1 = create_linked_list([1, 2, 4])
+    list1 = create_linked_list([])
     list2 = create_linked_list([1, 3, 5])
 
     merged_list = solution.mergeTwoLists(list1, list2)
